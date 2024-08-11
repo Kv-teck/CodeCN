@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="css/shoppingPage.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Shop Products</h1>
+        <div class="row" id="product-list">
+            <!-- Sản phẩm sẽ được tạo động ở đây -->
+        </div>
+    </div>
+
+    <script>
+        // Danh sách sản phẩm mẫu
+        const products = [
+            {
+                id: 1,
+                title: "Fan",
+                price: 10000,
+                thumbnail: "images/black-aesthetic-mountains-4k-9k.jpg"
+            },
+            {
+                id: 2,
+                title: "Lamp",
+                price: 15000,
+                thumbnail: "images/black-aesthetic-mountains-4k-9k.jpg"
+            },
+            {
+                id: 3,
+                title: "Phone",
+                price: 20000,
+                thumbnail: "images/black-aesthetic-mountains-4k-9k.jpg"
+            }
+        ];
+
+        // Render sản phẩm ra trang
+        const productList = document.getElementById('product-list');
+        products.forEach(product => {
+            productList.innerHTML += `
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="${product.thumbnail}" class="card-img-top" alt="${product.title}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.title}</h5>
+                            <p class="card-text">Price: ${product.price} VND</p>
+                            <a href="cart.html" onclick="addToCart(${product.id})" class="btn btn-primary">Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Hàm thêm sản phẩm vào giỏ hàng
+        function addToCart(productId) {
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+
+            const product = products.find(p => p.id === productId);
+            const existingProduct = cart.find(p => p.id === productId);
+
+            if (existingProduct) {
+                existingProduct.buyQty += 1;
+            } else {
+                cart.push({ ...product, buyQty: 1 });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${product.title} has been added to your cart.`);
+        }
+    </script>
+</body>
+
+</html>
